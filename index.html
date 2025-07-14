@@ -52,7 +52,7 @@
 
       // 2. Check for blocked ad script
       const script = document.createElement('script');
-      script.src = 'https://example.com/fake-ad.js'; // This should be a known ad URL or a dummy one
+      script.src = './ads.js';
       script.onerror = () => {
         adBlockDetected = true;
         showResult(adBlockDetected);
