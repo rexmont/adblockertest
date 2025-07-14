@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ad Blocker Detection</title>
+  <title>Advanced Ad Blocker Detection</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 2rem;
-      background-color: #f4f4f4;
+      background-color: #f9f9f9;
     }
     .message {
       font-size: 1.5rem;
@@ -23,7 +23,6 @@
       background-color: #e0ffe0;
       color: #0a0;
     }
-    /* This is the bait element that ad blockers may hide */
     .adsbox {
       height: 1px;
       width: 1px;
@@ -34,27 +33,48 @@
 </head>
 <body>
 
-  <h1>Ad Blocker Detection Test</h1>
+  <h1>Advanced Ad Blocker Detection Test</h1>
   <div id="result" class="message">Checking for ad blocker...</div>
 
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
+    function detectAdBlocker() {
+      let adBlockDetected = false;
+
+      // 1. Check for hidden bait element
       const bait = document.createElement('div');
       bait.className = 'adsbox';
       document.body.appendChild(bait);
 
-      setTimeout(() => {
-        const result = document.getElementById('result');
-        if (bait.offsetHeight === 0) {
-          result.textContent = '🚫 Ad Blocker Detected';
-          result.classList.add('detected');
-        } else {
-          result.textContent = '✅ No Ad Blocker Detected';
-          result.classList.add('not-detected');
-        }
-        document.body.removeChild(bait);
-      }, 100);
-    });
+      if (bait.offsetHeight === 0) {
+        adBlockDetected = true;
+      }
+      document.body.removeChild(bait);
+
+      // 2. Check for blocked ad script
+      const script = document.createElement('script');
+      script.src = 'https://example.com/fake-ad.js'; // This should be a known ad URL or a dummy one
+      script.onerror = () => {
+        adBlockDetected = true;
+        showResult(adBlockDetected);
+      };
+      script.onload = () => {
+        showResult(adBlockDetected);
+      };
+      document.body.appendChild(script);
+    }
+
+    function showResult(detected) {
+      const result = document.getElementById('result');
+      if (detected) {
+        result.textContent = '🚫 Ad Blocker Detected';
+        result.classList.add('detected');
+      } else {
+        result.textContent = '✅ No Ad Blocker Detected';
+        result.classList.add('not-detected');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', detectAdBlocker);
   </script>
 
 </body>
