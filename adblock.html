@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ad Blocker Detection</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f4f4f4;
+    }
+    .message {
+      font-size: 1.5rem;
+      padding: 1rem;
+      border-radius: 5px;
+      margin-top: 2rem;
+    }
+    .detected {
+      background-color: #ffe0e0;
+      color: #a00;
+    }
+    .not-detected {
+      background-color: #e0ffe0;
+      color: #0a0;
+    }
+    /* This is the bait element that ad blockers may hide */
+    .adsbox {
+      height: 1px;
+      width: 1px;
+      position: absolute;
+      left: -9999px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Ad Blocker Detection Test</h1>
+  <div id="result" class="message">Checking for ad blocker...</div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const bait = document.createElement('div');
+      bait.className = 'adsbox';
+      document.body.appendChild(bait);
+
+      setTimeout(() => {
+        const result = document.getElementById('result');
+        if (bait.offsetHeight === 0) {
+          result.textContent = '🚫 Ad Blocker Detected';
+          result.classList.add('detected');
+        } else {
+          result.textContent = '✅ No Ad Blocker Detected';
+          result.classList.add('not-detected');
+        }
+        document.body.removeChild(bait);
+      }, 100);
+    });
+  </script>
+
+</body>
+</html>
